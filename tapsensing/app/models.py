@@ -41,3 +41,7 @@ class Trail(models.Model):
     )
     date = models.DateField()
     user = models.ForeignKey(User)
+
+    class Meta:
+        unique_together = ('user', 'date')
+
