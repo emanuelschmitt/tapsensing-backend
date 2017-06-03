@@ -25,3 +25,19 @@ class TouchEvent(BaseTrackingItem):
         choices=EVENT_TYPE_CHOICES
     )
     rect_id = models.IntegerField()
+
+
+class Trail(models.Model):
+    STATUS_STARTED = 'STATUS_STARTED'
+    STATUS_ENDED = 'STATUS_ENDED'
+    STATUS_CHOICES = (
+        (STATUS_STARTED, 'Began'),
+        (STATUS_ENDED, 'Ended')
+    )
+
+    status = models.CharField(
+        max_length=100,
+        choices=STATUS_CHOICES
+    )
+    date = models.DateField()
+    user = models.ForeignKey(User)
