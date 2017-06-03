@@ -14,7 +14,7 @@ import os
 import environ
 
 # Load environment file.
-root = environ.Path(__file__) - 3  # three folder back (/a/b/c/ - 3 = /)
+root = environ.Path(__file__) - 2  # three folder back (/a/b/c/ - 3 = /)
 env = environ.Env(DEBUG=(bool, False), )  # set default values and casting
 environ.Env.read_env()  # reading .env file
 
@@ -123,18 +123,18 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 public_root = root.path('public/')
-
 MEDIA_ROOT = public_root('media')
-MEDIA_URL = 'media/'
+MEDIA_URL = '/media/'
 STATIC_ROOT = public_root('static')
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.TokenAuthentication'  # native apps
+        'rest_framework.authentication.TokenAuthentication', # native apps
     ),
     'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated'
+        'rest_framework.permissions.IsAuthenticated',
     ),
     'DEFAULT_RENDERER_CLASSES': (
         'rest_framework.renderers.JSONRenderer',

@@ -27,21 +27,32 @@ class TouchEvent(BaseTrackingItem):
     rect_id = models.IntegerField()
 
 
-class Trail(models.Model):
-    STATUS_STARTED = 'STATUS_STARTED'
-    STATUS_ENDED = 'STATUS_ENDED'
-    STATUS_CHOICES = (
-        (STATUS_STARTED, 'Began'),
-        (STATUS_ENDED, 'Ended')
+class Session(models.Model):
+    SITTING = 'STATUS_STARTED'
+    STANDING = 'STATUS_ENDED'
+    BODYPOSTURE_CHOICES = (
+        (SITTING, 'Sitting'),
+        (STANDING, 'Standing')
     )
 
-    status = models.CharField(
-        max_length=100,
-        choices=STATUS_CHOICES
+    INDEX_FINGER = 'INDEX_FINGER'
+    THUMB = 'THUMB'
+    TYPING_MODALITY_CHOICES = (
+        (INDEX_FINGER, 'Index Finger'),
+        (THUMB, 'Thumb')
     )
+
+    body_posture = models.CharField(
+        max_length=100,
+        choices=BODYPOSTURE_CHOICES
+    )
+    typing_modality = models.CharField(
+        max_length=100,
+        choices=TYPING_MODALITY_CHOICES
+    )
+
     date = models.DateField()
     user = models.ForeignKey(User)
 
     class Meta:
         unique_together = ('user', 'date')
-

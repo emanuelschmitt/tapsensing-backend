@@ -1,7 +1,15 @@
-from rest_framework.routers import SimpleRouter
-from .views.trail import TrailViewset
+from django.conf.urls import url
+from rest_framework.routers import DefaultRouter
 
-router = SimpleRouter()
-router.register(r'trail', TrailViewset)
+from .views.login import login
+from .views.session import SessionViewSet
 
-app_urls = router.urls
+urls = [
+    # Login
+    url(r'^login/$', login)
+]
+
+router = DefaultRouter()
+router.register(r'session', SessionViewSet)
+
+app_urls = urls + router.urls

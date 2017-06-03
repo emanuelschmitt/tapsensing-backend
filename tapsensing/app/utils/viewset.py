@@ -8,4 +8,3 @@ def CRUDViewSet(clazz):
         serializer_class = AllFieldSerializer(clazz)
 
     return ViewSet
-

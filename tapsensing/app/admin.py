@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Trail, TouchEvent
+from .models import Session, TouchEvent
 
-admin.register(Trail)
-admin.register(TouchEvent)
+admin.site.register(Session)
+admin.site.register(TouchEvent)

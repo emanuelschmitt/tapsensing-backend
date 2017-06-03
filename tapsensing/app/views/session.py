@@ -5,11 +5,11 @@ from rest_framework.decorators import list_route
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from ..models import Trail
+from ..models import Session
 from ..utils.viewset import CRUDViewSet
 
 
-class TrailViewset(CRUDViewSet(Trail)):
+class SessionViewSet(CRUDViewSet(Session)):
     permissions = (IsAuthenticated,)
 
     @list_route(methods=['post'], permissions=(IsAuthenticated,))
@@ -17,19 +17,19 @@ class TrailViewset(CRUDViewSet(Trail)):
 
         # check if trail exists for day and user
         today = date.today()
-        trail_exists_for_today = Trail.objects.filter(date=today, user=request.user).exists()
+        session_exists_for_today = SessionViewSet.objects.filter(date=today, user=request.user).exists()
 
         # if it exists return the trail has already started
-        if trail_exists_for_today:
+        if session_exists_for_today:
             response = Response(status=status.HTTP_412_PRECONDITION_FAILED)
 
         else:
-            trail = Trail()
-            trail.date = today
-            trail.status = Trail.STATUS_STARTED
-            trail.user = request.user
-            trail.save()
+            sesion = Session()
+            sesion.date = today
+            sesion.status = SessionViewSet.SITTING
+            sesion.user = request.user
+            sesion.save()
 
-            response = Response(status=status.HTTP_200_OK)
+            response = Response()
 
         return response
