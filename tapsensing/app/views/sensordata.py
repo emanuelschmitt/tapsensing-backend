@@ -18,15 +18,18 @@ class SensorDataSerializer(AllFieldSerializer(SensorData)):
 @api_view(['POST'])
 @permission_classes([permissions.IsAuthenticated])
 def sensor_data(request):
+    logger.info(request.data)
 
     try:
         sensordata = request.data.data
     except KeyError:
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
+    logger.info("data", sensordata)
+
     serializer = SensorDataSerializer(data=sensordata, many=True)
     if not serializer.is_valid():
-        return Response(status=status.HTTP_400_BAD_REQUEST, data=serializer.error_messages)
+        return Response(status=status.HTTP_400_BAD_REQUEST, data=serializer.errors)
 
     serializer.save()
     logger.info("sensor_data_endpoint called.")
