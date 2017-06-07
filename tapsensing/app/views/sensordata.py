@@ -16,8 +16,10 @@ class SensorDataListSerializer(serializers.ListSerializer):
         return SensorData.objects.bulk_create(books)
 
 
-class SensorDataSerializer(AllFieldSerializer(SensorData)):
+class SensorDataSerializer(serializers.Serializer):
     class Meta:
+        model = SensorData
+        fields = '__all__'
         list_serializer_class = SensorDataListSerializer
 
 
