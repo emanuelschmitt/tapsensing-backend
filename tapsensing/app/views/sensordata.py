@@ -1,4 +1,3 @@
-import datetime
 import logging
 
 from django.contrib.auth.models import User
@@ -27,6 +26,9 @@ def sensor_data(request):
         return Response(status=status.HTTP_400_BAD_REQUEST, data=serializer.errors)
 
     serializer.save()
-    logger.info("sensor_data_endpoint called.")
 
-    return Response(status=status.HTTP_200_OK)
+    response = {
+        'count': len(request.data)
+    }
+
+    return Response(response, status=status.HTTP_200_OK)
