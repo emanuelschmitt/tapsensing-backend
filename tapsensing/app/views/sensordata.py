@@ -1,7 +1,7 @@
 import logging
 
-from rest_framework import permissions, serializers, status
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework import permissions, serializers, status, parsers
+from rest_framework.decorators import api_view, permission_classes, parser_classes
 from rest_framework.response import Response
 
 from ..models import SensorData
@@ -17,6 +17,7 @@ class SensorDataSerializer(AllFieldSerializer(SensorData)):
 
 @api_view(['POST'])
 @permission_classes([permissions.IsAuthenticated])
+@parser_classes([parsers.JSONParser])
 def sensor_data(request):
     logger.info(request.data)
 
