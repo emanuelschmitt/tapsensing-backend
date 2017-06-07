@@ -20,14 +20,7 @@ class SensorDataSerializer(AllFieldSerializer(SensorData)):
 def sensor_data(request):
     logger.info(request.data)
 
-    try:
-        sensordata = request.data['data']
-    except KeyError:
-        return Response(status=status.HTTP_400_BAD_REQUEST)
-
-    logger.info("data", sensordata)
-
-    serializer = SensorDataSerializer(data=sensordata, many=True)
+    serializer = SensorDataSerializer(data=request.data, many=True)
     if not serializer.is_valid():
         return Response(status=status.HTTP_400_BAD_REQUEST, data=serializer.errors)
 
