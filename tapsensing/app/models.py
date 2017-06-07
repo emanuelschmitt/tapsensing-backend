@@ -27,6 +27,14 @@ class TouchEvent(BaseTrackingItem):
     rect_id = models.IntegerField()
 
 
+class SensorData(BaseTrackingItem):
+    type = models.CharField(max_length=100)
+    x = models.FloatField()
+    y = models.FloatField
+    z = models.FloatField
+    timestamp = models.DateTimeField()
+
+
 class Session(models.Model):
     SITTING = 'STATUS_STARTED'
     STANDING = 'STATUS_ENDED'
