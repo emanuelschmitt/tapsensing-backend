@@ -32,7 +32,6 @@ class SensorData(BaseTrackingItem):
     x = models.FloatField()
     y = models.FloatField
     z = models.FloatField
-    timestamp = models.DateTimeField()
 
 
 class Session(models.Model):

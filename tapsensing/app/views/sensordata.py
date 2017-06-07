@@ -1,6 +1,6 @@
 import logging
 
-from rest_framework import permissions
+from rest_framework import permissions, serializers, status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 
@@ -19,8 +19,16 @@ class SensorDataSerializer(AllFieldSerializer(SensorData)):
 @permission_classes([permissions.IsAuthenticated])
 def sensor_data(request):
 
-    logger.info("sensor_data_endpoint called.")
-    logger.debug(request.data)
-    user = request.user
+    try:
+        sensordata = request.data.data
+    except KeyError:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 
-    return Response()
+    serializer = SensorDataSerializer(data=sensordata, many=True)
+    if not serializer.is_valid():
+        return Response(status=status.HTTP_400_BAD_REQUEST, data=serializer.error_messages)
+
+    serializer.save()
+    logger.info("sensor_data_endpoint called.")
+
+    return Response(status=status.HTTP_200_OK)
