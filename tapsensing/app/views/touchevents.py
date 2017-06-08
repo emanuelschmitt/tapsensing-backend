@@ -18,7 +18,7 @@ class TouchEventsSerializer(AllFieldSerializer(TouchEvent)):
 @api_view(['POST'])
 @permission_classes([permissions.IsAuthenticated])
 @parser_classes([parsers.JSONParser])
-def sensor_data(request):
+def touch_event(request):
     logger.info(request.data)
 
     serializer = TouchEventsSerializer(data=request.data, many=True)
