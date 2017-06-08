@@ -32,8 +32,8 @@ class TouchEvent(BaseTrackingItem):
 class SensorData(BaseTrackingItem):
     type = models.CharField(max_length=100)
     x = models.FloatField()
-    y = models.FloatField
-    z = models.FloatField
+    y = models.FloatField()
+    z = models.FloatField()
 
 
 class Session(models.Model):
