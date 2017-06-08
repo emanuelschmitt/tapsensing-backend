@@ -5,13 +5,13 @@ from rest_framework import permissions, serializers, status, parsers
 from rest_framework.decorators import api_view, permission_classes, parser_classes
 from rest_framework.response import Response
 
-from ..models import SensorData
+from ..models import TouchEvent
 from ..utils.serializers import AllFieldSerializer
 
 logger = logging.getLogger(__name__)
 
 
-class SensorDataSerializer(AllFieldSerializer(SensorData)):
+class TouchEventsSerializer(AllFieldSerializer(TouchEvent)):
     user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
 
 
@@ -21,7 +21,7 @@ class SensorDataSerializer(AllFieldSerializer(SensorData)):
 def sensor_data(request):
     logger.info(request.data)
 
-    serializer = SensorDataSerializer(data=request.data, many=True)
+    serializer = TouchEventsSerializer(data=request.data, many=True)
     if not serializer.is_valid():
         return Response(status=status.HTTP_400_BAD_REQUEST, data=serializer.errors)
 

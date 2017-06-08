@@ -9,7 +9,10 @@ from .views.session import SessionViewSet
 urls = [
     # Login
     url(r'^login/$', login),
+
+    # Data
     url(r'^sensordata/$', sensor_data),
+    url(r'^touchevent/$', sensor_data)
 ]
 
 router = DefaultRouter()

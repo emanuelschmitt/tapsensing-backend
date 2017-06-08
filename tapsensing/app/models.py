@@ -20,11 +20,13 @@ class TouchEvent(BaseTrackingItem):
         (TOUCH_UP, 'Touch up')
     )
 
-    event_type = models.CharField(
+    type = models.CharField(
         max_length=100,
         choices=EVENT_TYPE_CHOICES
     )
-    rect_id = models.IntegerField()
+    x = models.FloatField()
+    y = models.FloatField()
+    grid_id = models.IntegerField()
 
 
 class SensorData(BaseTrackingItem):
