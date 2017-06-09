@@ -19,7 +19,6 @@ class SensorDataSerializer(AllFieldSerializer(SensorData)):
 @permission_classes([permissions.IsAuthenticated])
 @parser_classes([parsers.JSONParser])
 def sensor_data(request):
-    logger.info(request.data)
 
     serializer = SensorDataSerializer(data=request.data, many=True)
     if not serializer.is_valid():

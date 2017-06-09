@@ -1,35 +1,31 @@
 from datetime import date
 
-from rest_framework import status
+from django.contrib.auth.models import User
+from rest_framework import serializers
 from rest_framework.decorators import list_route
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from ..models import Session
 from ..utils.viewset import CRUDViewSet
+from ..utils.serializers import AllFieldSerializer
+
+
+class SessionSerializer(AllFieldSerializer(Session)):
+    user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
 
 
 class SessionViewSet(CRUDViewSet(Session)):
     permissions = (IsAuthenticated,)
+    serializer_class = SessionSerializer
 
-    @list_route(methods=['post'], permissions=(IsAuthenticated,))
-    def start(self, request):
-
-        # check if trail exists for day and user
+    @list_route(methods=['get'], permissions=(IsAuthenticated,))
+    def exists(self, request):
         today = date.today()
-        session_exists_for_today = SessionViewSet.objects.filter(date=today, user=request.user).exists()
+        user = request.user
 
-        # if it exists return the trail has already started
-        if session_exists_for_today:
-            response = Response(status=status.HTTP_412_PRECONDITION_FAILED)
+        response = {
+            'exists': Session.objects.filter(date=today, user=user).exists()
+        }
 
-        else:
-            sesion = Session()
-            sesion.date = today
-            sesion.status = SessionViewSet.SITTING
-            sesion.user = request.user
-            sesion.save()
-
-            response = Response()
-
-        return response
+        return Response(response)

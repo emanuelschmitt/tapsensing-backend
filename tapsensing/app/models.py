@@ -38,8 +38,8 @@ class SensorData(BaseTrackingItem):
 
 
 class Session(models.Model):
-    SITTING = 'STATUS_STARTED'
-    STANDING = 'STATUS_ENDED'
+    SITTING = 'SITTING'
+    STANDING = 'STANDING'
     BODYPOSTURE_CHOICES = (
         (SITTING, 'Sitting'),
         (STANDING, 'Standing')
