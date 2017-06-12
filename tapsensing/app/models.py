@@ -45,7 +45,7 @@ class Session(models.Model):
         (STANDING, 'Standing')
     )
 
-    INDEX_FINGER = 'INDEX_FINGER'
+    INDEX_FINGER = 'INDEX'
     THUMB = 'THUMB'
     TYPING_MODALITY_CHOICES = (
         (INDEX_FINGER, 'Index Finger'),
