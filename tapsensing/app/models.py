@@ -61,6 +61,7 @@ class Session(models.Model):
         choices=TYPING_MODALITY_CHOICES
     )
 
+    mood = models.CharField(max_length=100)
     date = models.DateField()
     user = models.ForeignKey(User)
 
