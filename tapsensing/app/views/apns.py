@@ -28,4 +28,4 @@ def apns_register(request):
 
     logger.info("Device registered for user %d with token %s".format(request.user.id, device_token))
 
-    return Response()
+    return Response({"msg": "success"})
