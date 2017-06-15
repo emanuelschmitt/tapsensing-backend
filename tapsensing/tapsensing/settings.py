@@ -42,7 +42,8 @@ DJANGO_APPS = [
 
 THIRD_PARTY_APPS = [
     'rest_framework',
-    'rest_framework.authtoken'
+    'rest_framework.authtoken',
+    'push_notifications'
 ]
 
 LOCAL_APPS = [
@@ -166,4 +167,9 @@ LOGGING = {
             'propagate': True,
         }
     },
+}
+
+PUSH_NOTIFICATIONS_SETTINGS = {
+    "APNS_CERTIFICATE": "operations/apns/apns-dev.pem",
+    "APNS_TOPIC": "de.qu.tapsensing",
 }

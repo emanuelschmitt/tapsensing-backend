@@ -5,7 +5,7 @@ from .views.session import SessionViewSet
 from .views.login import login
 from .views.sensordata import sensor_data
 from .views.touchevents import touch_event
-
+from .views.apns import apns_register
 
 urls = [
     # Login
@@ -13,7 +13,10 @@ urls = [
 
     # Data
     url(r'^sensordata/$', sensor_data),
-    url(r'^touchevent/$', touch_event)
+    url(r'^touchevent/$', touch_event),
+
+    # APNS
+    url(r'^apns/$', apns_register)
 ]
 
 router = DefaultRouter()
