@@ -21,10 +21,11 @@ def apns_register(request):
         return Response(data=serializers.errors, status=status.HTTP_400_BAD_REQUEST)
 
     device_token = serializers.validated_data["device_token"]
-    APNSDevice.objects.get_or_create(
-        registration_id=device_token,
+    device, created = APNSDevice.objects.get_or_create(
         user=request.user
     )
+    device.registration_id = device_token
+    device.save()
 
     logger.info("Device registered for user %d with token %s".format(request.user.id, device_token))
 
