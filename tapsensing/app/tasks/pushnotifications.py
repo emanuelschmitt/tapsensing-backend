@@ -1,0 +1,29 @@
+from background_task import background
+from logging import getLogger
+
+logger = getLogger(__name__)
+
+
+@background(schedule=60)
+def demo_task(message):
+    print("jojojo")
+    logger.debug('demo_task. message={0}'.format(message))
+
+
+@background(schedule=60)
+def send_push_notifications():
+    from push_notifications.models import APNSDevice
+
+    devices = APNSDevice.objects.all()
+
+    message = {
+        'sound': 'default',
+        'message': 'this is a test'
+    }
+
+    for device in devices:
+        logger.info('Sending push notification to %d.'.format(device.user.id))
+        device.send_message(
+            message=message['message'],
+            sound=message['sound']
+        )

@@ -43,7 +43,8 @@ DJANGO_APPS = [
 THIRD_PARTY_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
-    'push_notifications'
+    'push_notifications',
+    'background_task',
 ]
 
 LOCAL_APPS = [
