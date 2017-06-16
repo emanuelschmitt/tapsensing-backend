@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 
-from ...tasks.pushnotifications import send_push_notifications
+from ...tasks import send_push_notifications
 
 
 class Command(BaseCommand):

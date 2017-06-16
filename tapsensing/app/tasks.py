@@ -14,6 +14,7 @@ def demo_task(message):
 
 @background(schedule=60)
 def send_push_notifications():
+    logger.info('Sending push notifications...')
 
     devices = APNSDevice.objects.all()
 
@@ -23,7 +24,7 @@ def send_push_notifications():
     }
 
     for device in devices:
-        logger.info('Sending push notification to %d.'.format(device.user.id))
+        logger.info('Sending push notification to %d.' % device.user.id)
         device.send_message(
             message['message'],
             sound=message['sound']
