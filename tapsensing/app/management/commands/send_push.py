@@ -38,7 +38,6 @@ class Command(BaseCommand):
 
 
 def send_push_notifications():
-
     now = datetime.now()
     now = now.time()
     logger.debug('It is now %s', now.strftime("%H:%M:%S"))
