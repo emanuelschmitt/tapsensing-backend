@@ -152,7 +152,7 @@ LOGGING = {
         'file': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': 'logs/debug.log',
+            'filename': root.path('logs/')('debug.log'),
         },
     },
     'loggers': {
@@ -170,6 +170,6 @@ LOGGING = {
 }
 
 PUSH_NOTIFICATIONS_SETTINGS = {
-    "APNS_CERTIFICATE": "operations/apns/apns-dev.pem",
+    "APNS_CERTIFICATE":  root.path('operations/apns/')('apns-dev.pem'),
     "APNS_TOPIC": "de.qu.tapsensing",
 }
