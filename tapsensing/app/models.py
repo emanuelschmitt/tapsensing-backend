@@ -6,6 +6,7 @@ class BaseTrackingItem(models.Model):
     timestamp = models.DateTimeField()
     user = models.ForeignKey(User)
     device_UDID = models.CharField(max_length=200)
+    session_code = models.CharField(max_length=100)
 
     class Meta:
         abstract = True
@@ -64,6 +65,8 @@ class Session(models.Model):
     mood = models.CharField(max_length=100)
     date = models.DateField()
     user = models.ForeignKey(User)
+    session_code = models.CharField(max_length=100)
+
 
     class Meta:
         unique_together = ('user', 'date')
