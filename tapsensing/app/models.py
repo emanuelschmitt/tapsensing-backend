@@ -66,7 +66,4 @@ class Session(models.Model):
     date = models.DateField()
     user = models.ForeignKey(User)
     session_code = models.CharField(max_length=100)
-
-
-    class Meta:
-        unique_together = ('user', 'date')
+    device_model = models.CharField(max_length=100)
