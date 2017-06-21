@@ -1,5 +1,6 @@
 from datetime import date
 
+from django.conf import settings
 from django.contrib.auth.models import User
 from rest_framework import serializers
 from rest_framework.decorators import list_route
@@ -24,8 +25,11 @@ class SessionViewSet(CRUDViewSet(Session)):
         today = date.today()
         user = request.user
 
+        session_exists = Session.objects.filter(date=today, user=user).exists()
+        session_exists = False if settings.LAB_MODE else session_exists
+
         response = {
-            'exists': Session.objects.filter(date=today, user=user).exists()
+            'exists': session_exists
         }
 
         return Response(response)

@@ -15,7 +15,7 @@ import environ
 
 # Load environment file.
 root = environ.Path(__file__) - 2  # three folder back (/a/b/c/ - 3 = /)
-env = environ.Env(DEBUG=(bool, False), )  # set default values and casting
+env = environ.Env(DEBUG=(bool, False), LAB_MODE=(bool, False))  # set default values and casting
 environ.Env.read_env()  # reading .env file
 
 # Quick-start development settings - unsuitable for production
@@ -173,3 +173,8 @@ PUSH_NOTIFICATIONS_SETTINGS = {
     "APNS_CERTIFICATE":  root.path('operations/apns/')('apns-dev.pem'),
     "APNS_TOPIC": "de.qu.tapsensing",
 }
+
+# When Labmode is activated, subjects are able to create a create sessions at all times.
+# When Labmode is inactive, subjects can only perform a session once a day.
+LAB_MODE = env('LAB_MODE')
+print(LAB_MODE)
