@@ -26,6 +26,7 @@ class SessionViewSet(CRUDViewSet(Session)):
         user = request.user
 
         session_exists = Session.objects.filter(date=today, user=user).exists()
+        # change exists for day if app is currently in lab mode.
         session_exists = False if settings.LAB_MODE else session_exists
 
         response = {
