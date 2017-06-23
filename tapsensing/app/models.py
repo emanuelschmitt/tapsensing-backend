@@ -29,6 +29,7 @@ class TouchEvent(BaseTrackingItem):
     y = models.FloatField()
     grid_id = models.IntegerField()
     is_hit = models.BooleanField()
+    grid_shape = models.CharField(max_length=100)
 
 
 class SensorData(BaseTrackingItem):
