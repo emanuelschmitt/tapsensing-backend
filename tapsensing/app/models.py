@@ -5,7 +5,6 @@ from django.contrib.auth.models import User
 class BaseTrackingItem(models.Model):
     timestamp = models.DateTimeField()
     user = models.ForeignKey(User)
-    device_UDID = models.CharField(max_length=200)
     session_code = models.CharField(max_length=100)
 
     class Meta:
@@ -54,6 +53,13 @@ class Session(models.Model):
         (THUMB, 'Thumb')
     )
 
+    HAND_LEFT = 'HAND_LEFT'
+    HAND_RIGHT = 'HAND_RIGHT'
+    HAND_CHOICES = (
+        (HAND_LEFT, 'Left Hand'),
+        (HAND_RIGHT, 'Right Hand')
+    )
+
     body_posture = models.CharField(
         max_length=100,
         choices=BODYPOSTURE_CHOICES
@@ -62,9 +68,14 @@ class Session(models.Model):
         max_length=100,
         choices=TYPING_MODALITY_CHOICES
     )
+    hand = models.CharField(
+        max_length=100,
+        choices=HAND_CHOICES
+    )
 
     mood = models.CharField(max_length=100)
     date = models.DateField()
     user = models.ForeignKey(User)
     session_code = models.CharField(max_length=100)
     device_model = models.CharField(max_length=100)
+    device_udid = models.CharField(max_length=100)

@@ -170,11 +170,10 @@ LOGGING = {
 }
 
 PUSH_NOTIFICATIONS_SETTINGS = {
-    "APNS_CERTIFICATE":  root.path('operations/apns/')('apns-dev.pem'),
+    "APNS_CERTIFICATE": root.path('operations/apns/')('apns-dev.pem'),
     "APNS_TOPIC": "de.qu.tapsensing",
 }
 
 # When Labmode is activated, subjects are able to create a create sessions at all times.
 # When Labmode is inactive, subjects can only perform a session once a day.
 LAB_MODE = env('LAB_MODE')
-print(LAB_MODE)
