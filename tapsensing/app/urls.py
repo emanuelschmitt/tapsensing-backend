@@ -6,6 +6,7 @@ from .views.login import login
 from .views.sensordata import sensor_data
 from .views.touchevents import touch_event
 from .views.apns import apns_register
+from .views.pretest_survey import pretest_survey
 
 urls = [
     # Login
@@ -16,7 +17,10 @@ urls = [
     url(r'^touchevent/$', touch_event),
 
     # APNS
-    url(r'^apns/$', apns_register)
+    url(r'^apns/$', apns_register),
+
+    # Surveys
+    url(r'^survey/pretest/$', pretest_survey)
 ]
 
 router = DefaultRouter()

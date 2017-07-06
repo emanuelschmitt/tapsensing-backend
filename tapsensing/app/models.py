@@ -79,3 +79,18 @@ class Session(models.Model):
     session_code = models.CharField(max_length=100)
     device_model = models.CharField(max_length=100)
     device_udid = models.CharField(max_length=100)
+
+
+class PreTestSurvey(models.Model):
+    created = models.DateTimeField(auto_now_add=True)
+
+    age = models.IntegerField()
+    gender = models.CharField(max_length=100)
+    occupation = models.CharField(max_length=200)
+    hand = models.CharField(max_length=100)
+
+    smartphone_use = models.BooleanField()
+    smartphone_model = models.CharField(max_length=200)
+    input_modalities = models.CharField(max_length=200)
+    most_used_input_modality = models.CharField(max_length=100)
+    device_usage = models.CharField(max_length=200)
