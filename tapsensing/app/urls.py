@@ -1,6 +1,7 @@
 from django.conf.urls import url
 from rest_framework.routers import DefaultRouter
 
+from .views.statistics import statistics
 from .views.session import SessionViewSet
 from .views.login import login
 from .views.sensordata import sensor_data
@@ -20,7 +21,10 @@ urls = [
     url(r'^apns/$', apns_register),
 
     # Surveys
-    url(r'^survey/pretest/$', pretest_survey)
+    url(r'^survey/pretest/$', pretest_survey),
+
+    # Statistics
+    url(r'^statistics/$', statistics)
 ]
 
 router = DefaultRouter()
