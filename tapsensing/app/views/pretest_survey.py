@@ -1,7 +1,6 @@
 import logging
 
-from django.contrib.auth.models import User
-from rest_framework import permissions, serializers, status, parsers
+from rest_framework import permissions, status, parsers
 from rest_framework.decorators import api_view, permission_classes, parser_classes
 from rest_framework.response import Response
 
@@ -12,15 +11,14 @@ logger = logging.getLogger(__name__)
 
 
 class PreTestSurveySerializer(AllFieldSerializer(PreTestSurvey)):
-    user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
+    pass
 
 
 @api_view(['POST'])
 @permission_classes([permissions.AllowAny])
 @parser_classes([parsers.JSONParser])
 def pretest_survey(request):
-
-    serializer = PreTestSurvey(data=request.data, many=True)
+    serializer = PreTestSurveySerializer(data=request.data)
 
     if not serializer.is_valid():
         return Response(status=status.HTTP_400_BAD_REQUEST, data=serializer.errors)

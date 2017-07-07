@@ -43,7 +43,8 @@ DJANGO_APPS = [
 THIRD_PARTY_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
-    'push_notifications'
+    'push_notifications',
+    'corsheaders'
 ]
 
 LOCAL_APPS = [
@@ -55,6 +56,7 @@ INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -177,3 +179,6 @@ PUSH_NOTIFICATIONS_SETTINGS = {
 # When Labmode is activated, subjects are able to create a create sessions at all times.
 # When Labmode is inactive, subjects can only perform a session once a day.
 LAB_MODE = env('LAB_MODE')
+
+# Enabling CORS for for all incoming requests.
+CORS_ORIGIN_ALLOW_ALL = True
