@@ -1,5 +1,6 @@
 import datetime
 
+from django.contrib.auth.models import User
 from rest_framework import permissions
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
@@ -69,11 +70,31 @@ def last_24_hours_count(model):
     filtered_by_date = [filter_by_hour(queryset, date) for date in d_range]
 
     counts = [objects.count() for objects in filtered_by_date]
-    labels = [date.strftime('%d/%m/%y %H:00') for date in d_range]
+    labels = [date.strftime('%Hh') for date in d_range]
 
     return {
         'counts': counts[::-1],
         'labels': labels[::-1]
+    }
+
+
+def users_participated():
+    # TODO: filter users here
+    user_count = User.objects.count()
+    today = datetime.date.today()
+
+    sessions_today = filter_by_day(
+        Session.objects,
+        today,
+        'date'
+    )
+
+    unique_users_participated = [session.user.id for session in sessions_today]
+    unique_users_participated = len(list(set(unique_users_participated)))
+
+    return {
+        'counts': [unique_users_participated, user_count],
+        'labels': ['participated', 'total']
     }
 
 
@@ -94,7 +115,8 @@ def statistics(request):
         'touchWeek': counts_touch_week,
         'sessionWeek': counts_session_week,
         'touch24': counts_touch_24,
-        'sensor24': counts_sensor_data_24
+        'sensor24': counts_sensor_data_24,
+        'usersParticipated': users_participated
     }
 
     return Response(response)
