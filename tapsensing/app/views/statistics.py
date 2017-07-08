@@ -15,6 +15,24 @@ def date_range(last_n):
     return dates
 
 
+def _24_hour_range():
+    today = datetime.datetime.now()
+    timedeltas = [datetime.timedelta(hours=x) for x in range(24)]
+    dates = [today - delta for delta in timedeltas]
+    return dates
+
+
+def filter_by_hour(queryset, date):
+    field_dict = {
+        'timestamp__day': date.day,
+        'timestamp__month': date.month,
+        'timestamp__year': date.year,
+        'timestamp__hour': date.hour
+    }
+
+    return queryset.filter(**field_dict)
+
+
 def filter_by_day(queryset, date, datefield):
     """filters an ORM queryset to match exact date"""
 
@@ -36,8 +54,22 @@ def last_n_days_count(model, n_days, datefield):
     d_range = date_range(n_days)
     filtered_by_date = [filter_by_day(queryset, date, datefield) for date in d_range]
 
-    counts = [touches.count() for touches in filtered_by_date]
+    counts = [objects.count() for objects in filtered_by_date]
     labels = [date.strftime('%a') for date in d_range]
+
+    return {
+        'counts': counts[::-1],
+        'labels': labels[::-1]
+    }
+
+
+def last_24_hours_count(model):
+    queryset = model.objects.all()
+    d_range = _24_hour_range()
+    filtered_by_date = [filter_by_hour(queryset, date) for date in d_range]
+
+    counts = [objects.count() for objects in filtered_by_date]
+    labels = [date.strftime('%d/%m/%y %H:00') for date in d_range]
 
     return {
         'counts': counts[::-1],
@@ -48,16 +80,21 @@ def last_n_days_count(model, n_days, datefield):
 @api_view(['GET'])
 @permission_classes([permissions.AllowAny])
 def statistics(request):
-    last_n_days = 3
+    last_n_days = 7
 
-    counts_sensordata = last_n_days_count(SensorData, last_n_days, 'timestamp')
-    counts_touch = last_n_days_count(TouchEvent, last_n_days,  'timestamp')
-    counts_session = last_n_days_count(Session, last_n_days, 'date')
+    counts_sensordata_week = last_n_days_count(SensorData, last_n_days, 'timestamp')
+    counts_touch_week = last_n_days_count(TouchEvent, last_n_days, 'timestamp')
+    counts_session_week = last_n_days_count(Session, last_n_days, 'date')
+
+    counts_sensor_data_24 = last_24_hours_count(SensorData)
+    counts_touch_24 = last_24_hours_count(TouchEvent)
 
     response = {
-        'sensor': counts_sensordata,
-        'touch': counts_touch,
-        'session': counts_session
+        'sensorWeek': counts_sensordata_week,
+        'touchWeek': counts_touch_week,
+        'sessionWeek': counts_session_week,
+        'touch24': counts_touch_24,
+        'sensor24': counts_sensor_data_24
     }
 
     return Response(response)
