@@ -116,7 +116,7 @@ def statistics(request):
         'sessionWeek': counts_session_week,
         'touch24': counts_touch_24,
         'sensor24': counts_sensor_data_24,
-        'usersParticipated': users_participated
+        'usersParticipated': users_participated()
     }
 
     return Response(response)
