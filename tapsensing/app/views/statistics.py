@@ -91,10 +91,11 @@ def users_participated():
 
     unique_users_participated = [session.user.id for session in sessions_today]
     unique_users_participated = len(list(set(unique_users_participated)))
+    quotient = float(unique_users_participated) / user_count
 
     return {
-        'counts': [unique_users_participated, user_count],
-        'labels': ['participated', 'total']
+        'counts': [quotient, 1 - quotient],
+        'labels': ['participated', 'not participated']
     }
 
 
