@@ -1,0 +1,16 @@
+server {
+    listen 80;
+    server_name api.tapsensing.de;
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+
+    location /static/ {
+        root /home/django/tapsensing-backend/tapsensing/public;
+    }
+
+    location / {
+        include proxy_params;
+        # proxy_pass http://localhost:8000;
+	    proxy_pass http://unix:/home/django/tapsensing-backend/tapsensing/tapsensing.sock;
+    }
+}
