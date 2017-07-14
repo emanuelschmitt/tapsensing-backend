@@ -24,7 +24,9 @@ def sensor_data(request):
     if not serializer.is_valid():
         return Response(status=status.HTTP_400_BAD_REQUEST, data=serializer.errors)
 
-    serializer.save()
+    data = serializer.validated_data
+
+    SensorData.objects.bulk_create(data, 50)
 
     response = {
         'count': len(serializer.validated_data)
