@@ -16,16 +16,17 @@ TIME_WINDOW_END = time(21, 0, 0)
 
 TIME_RANGES = [
     {
-        'rng': [time(8, 0, 0), time(12, 0, 0)],
-        'message': 'This is the first message'
+        # as the cronjob triggers
+        'rng': [time(6, 30, 0), time(7, 30, 0)],
+        'message': 'Good Morning. This a friendly reminder to take part in the tapsensing study today.'
     },
     {
-        'rng': [time(12, 0, 0), time(16, 0, 0)],
-        'message': 'This is the second message'
+        'rng': [time(9, 30, 0), time(10, 30, 0)],
+        'message': 'Do you have 10 minutes to take part in the study?'
     },
     {
-        'rng': [time(16, 0, 0), time(21, 0, 0)],
-        'message': 'This is the third message'
+        'rng': [time(15, 30, 0), time(16, 30, 0)],
+        'message': "I know your day was busy, but don't forget to tap"
     }
 ]
 
@@ -66,8 +67,10 @@ def send_messages(message, sound='default'):
             continue
 
         user_devices = devices.filter(user=user)
+
         if not user_devices:
             continue
+
         logger.info('Sending push notification to %d.' % user.pk)
         user_devices.send_message(message, sound=sound)
 
