@@ -1,0 +1,12 @@
+server {
+
+    root /home/django/tapsensing-frontend/instruction;
+    index index.html index.htm;
+
+    server_name instruction.tapsensing.de;
+
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+
+}
