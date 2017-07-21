@@ -18,7 +18,7 @@ def trial_settings(request):
         trial_setting = settings.TRIAL_SETTINGS
         shapes = trial_setting['SHAPES']
         repeats = trial_setting['REPEATS']
-        rect_size = trial_settings['RECT_SIZE']
+        rect_size = trial_setting['RECT_SIZE']
 
     except KeyError:
         raise ImproperlyConfigured('Trail Settings are not properly set.')
