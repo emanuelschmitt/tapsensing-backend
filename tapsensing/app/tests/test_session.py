@@ -2,7 +2,7 @@ import datetime
 
 from django.test import TestCase
 from django.contrib.auth.models import User
-from rest_framework.test import APIClient, APIRequestFactory, force_authenticate
+from rest_framework.test import APIRequestFactory, force_authenticate
 
 from ..models import Session
 from ..views.session import SessionViewSet

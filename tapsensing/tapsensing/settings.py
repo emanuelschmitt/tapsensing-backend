@@ -182,3 +182,12 @@ LAB_MODE = env('LAB_MODE')
 
 # Enabling CORS for for all incoming requests.
 CORS_ORIGIN_ALLOW_ALL = True
+
+TRIAL_SETTINGS = {
+    'SHAPES': [
+        {'height': 2, 'width': 2},
+        {'height': 4, 'width': 3},
+        {'height': 5, 'width': 4}
+    ],
+    'REPEATS': 1
+}
