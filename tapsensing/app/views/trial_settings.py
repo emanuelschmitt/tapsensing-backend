@@ -15,17 +15,18 @@ logger = logging.getLogger(__name__)
 def trial_settings(request):
 
     try:
-
         trial_setting = settings.TRIAL_SETTINGS
         shapes = trial_setting['SHAPES']
         repeats = trial_setting['REPEATS']
+        rect_size = trial_settings['RECT_SIZE']
 
     except KeyError:
         raise ImproperlyConfigured('Trail Settings are not properly set.')
 
     response = {
         'shapes': shapes,
-        'repeats': repeats
+        'repeats': repeats,
+        'rect_size': rect_size
     }
 
     return Response(response, status=status.HTTP_200_OK)

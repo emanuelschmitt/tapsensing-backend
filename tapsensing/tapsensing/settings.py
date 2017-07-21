@@ -189,5 +189,6 @@ TRIAL_SETTINGS = {
         {'height': 4, 'width': 3},
         {'height': 5, 'width': 4}
     ],
-    'REPEATS': 1
+    'REPEATS': 1,
+    'RECT_SIZE': 70
 }
