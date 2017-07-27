@@ -19,17 +19,27 @@ TIME_RANGES = [
         # as the cronjob triggers, the cronjob is triggered once an our at XX:00
         # sending at 9:00 GMT+1
         'rng': [time(6, 30, 0), time(7, 30, 0)],
-        'message': 'Good Morning. This a friendly reminder to take part in the tapsensing study today.'
+        'message': 'Good Morning. This a friendly reminder to take part in the tapsensing study today.',
+        'sound': "default"
     },
     {
         # sending at 12:00 GMT+1
         'rng': [time(9, 30, 0), time(10, 30, 0)],
-        'message': 'Do you have 10 minutes to take part in the study?'
+        'message': "Tapping is a lot of fun.",
+        'sound': ""
     },
     {
         # sending at 18:00 GTM+1
         'rng': [time(15, 30, 0), time(16, 30, 0)],
-        'message': "I know your day was busy, but don't forget to tap"
+        'message': "I know your day is busy, but don't forget to take part in the study.",
+        'sound': ""
+    },
+    {
+        # sending at 20:00 GTM+1
+        'rng': [time(17, 30, 0), time(18, 30, 0)],
+        'message': "",
+        # default sound is the standard bling.
+        'sound': "default"
     }
 ]
 
@@ -56,7 +66,7 @@ def send_push_notifications():
     # checking if we are in one of the timeranges
     for t_range in TIME_RANGES:
         if time_in_range(t_range['rng'][0], t_range['rng'][1], now):
-            send_messages(t_range['message'])
+            send_messages(t_range['message'], sound=t_range['sound'])
             break
 
 
