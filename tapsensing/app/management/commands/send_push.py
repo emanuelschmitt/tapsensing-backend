@@ -11,20 +11,23 @@ logger = getLogger(__name__)
 
 # set the time window where push notifications should be sent.
 # NOTE: These are UTC Times, Berlin time is + 2h.
-TIME_WINDOW_START = time(8, 0, 0)
+TIME_WINDOW_START = time(6, 0, 0)
 TIME_WINDOW_END = time(21, 0, 0)
 
 TIME_RANGES = [
     {
-        # as the cronjob triggers
+        # as the cronjob triggers, the cronjob is triggered once an our at XX:00
+        # sending at 9:00 GMT+1
         'rng': [time(6, 30, 0), time(7, 30, 0)],
         'message': 'Good Morning. This a friendly reminder to take part in the tapsensing study today.'
     },
     {
+        # sending at 12:00 GMT+1
         'rng': [time(9, 30, 0), time(10, 30, 0)],
         'message': 'Do you have 10 minutes to take part in the study?'
     },
     {
+        # sending at 18:00 GTM+1
         'rng': [time(15, 30, 0), time(16, 30, 0)],
         'message': "I know your day was busy, but don't forget to tap"
     }

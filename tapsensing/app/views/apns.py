@@ -17,6 +17,7 @@ class APNSTokenSerializer(serializers.Serializer):
 @permission_classes([permissions.IsAuthenticated])
 def apns_register(request):
     serializers = APNSTokenSerializer(data=request.data)
+
     if not serializers.is_valid():
         return Response(data=serializers.errors, status=status.HTTP_400_BAD_REQUEST)
 
