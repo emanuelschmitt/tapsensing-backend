@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Session, TouchEvent, SensorData
+from .models import Session, TouchEvent, SensorData, UserSettings
 
 
 class SessionAdmin(admin.ModelAdmin):
@@ -24,3 +24,5 @@ class TouchEventAdmin(admin.ModelAdmin):
 
 
 admin.site.register(TouchEvent, TouchEventAdmin)
+
+admin.site.register(UserSettings)
