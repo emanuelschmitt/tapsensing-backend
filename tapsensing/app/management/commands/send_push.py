@@ -20,13 +20,13 @@ TIME_RANGES = [
         # sending at 9:00 GMT+1
         'rng': [time(6, 30, 0), time(7, 30, 0)],
         'message': 'Good Morning. This a friendly reminder to take part in the tapsensing study today.',
-        'sound': "default"
+        'sound': ""
     },
     {
         # sending at 12:00 GMT+1
         'rng': [time(9, 30, 0), time(10, 30, 0)],
-        'message': "Tapping is a lot of fun.",
-        'sound': ""
+        'message': "Tapping is a lot of fun. Have you tapped the buttons today?",
+        'sound': "default"
     },
     {
         # sending at 18:00 GTM+1
@@ -35,9 +35,9 @@ TIME_RANGES = [
         'sound': ""
     },
     {
-        # sending at 20:00 GTM+1
-        'rng': [time(17, 30, 0), time(18, 30, 0)],
-        'message': "",
+        # sending at 21:00 GTM+1
+        'rng': [time(18, 30, 0), time(19, 30, 0)],
+        'message': "You have not taken part in the study today. Please do it now.",
         # default sound is the standard bling.
         'sound': "default"
     }
