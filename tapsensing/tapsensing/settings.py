@@ -171,8 +171,13 @@ LOGGING = {
     },
 }
 
+if DEBUG:
+    apns_cert_path = root.path('operations/apns/')('apns-dev.pem')
+else:
+    apns_cert_path = root.path('operations/apns/')('apns-pro.pem')
+
 PUSH_NOTIFICATIONS_SETTINGS = {
-    "APNS_CERTIFICATE": root.path('operations/apns/')('apns-dev.pem'),
+    "APNS_CERTIFICATE": apns_cert_path,
     "APNS_TOPIC": "de.qu.tapsensing",
 }
 
