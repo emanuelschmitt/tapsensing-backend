@@ -176,10 +176,6 @@ PUSH_NOTIFICATIONS_SETTINGS = {
     "APNS_TOPIC": "de.qu.tapsensing",
 }
 
-# When Labmode is activated, subjects are able to create a create sessions at all times.
-# When Labmode is inactive, subjects can only perform a session once a day.
-LAB_MODE = env('LAB_MODE')
-
 # Enabling CORS for for all incoming requests.
 CORS_ORIGIN_ALLOW_ALL = True
 
