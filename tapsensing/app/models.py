@@ -89,6 +89,7 @@ class Session(models.Model):
     session_code = models.CharField(max_length=100)
     device_model = models.CharField(max_length=100)
     device_udid = models.CharField(max_length=100)
+    lab_mode = models.BooleanField(default=False)
 
 
 class PreTestSurvey(models.Model):

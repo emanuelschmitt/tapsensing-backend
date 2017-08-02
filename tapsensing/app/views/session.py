@@ -1,6 +1,5 @@
 from datetime import date
 
-from django.conf import settings
 from django.contrib.auth.models import User
 from rest_framework import serializers
 from rest_framework.decorators import list_route
@@ -19,6 +18,9 @@ class SessionSerializer(AllFieldSerializer(Session)):
 class SessionViewSet(CRUDViewSet(Session)):
     permissions = (IsAuthenticated,)
     serializer_class = SessionSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(lab_mode=self.request.user.usersettings.lab_mode)
 
     @list_route(methods=['get'], permissions=(IsAuthenticated,))
     def exists(self, request):
