@@ -1,5 +1,6 @@
 from datetime import date
 
+from enum import Enum
 from django.conf import settings
 from django.contrib.auth.models import User
 from rest_framework import serializers
@@ -14,6 +15,13 @@ from ..utils.serializers import AllFieldSerializer
 
 class SessionSerializer(AllFieldSerializer(Session)):
     user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
+
+
+class States(Enum):
+    LAB_MODE = 'LAB_MODE'
+    NOT_DONE_TODAY = 'NOT_DONE_TODAY'
+    DONE_TODAY = 'DONE_TODAY'
+    COMPLETED = 'COMPLETED'
 
 
 class SessionViewSet(CRUDViewSet(Session)):
@@ -33,21 +41,29 @@ class SessionViewSet(CRUDViewSet(Session)):
         today = date.today()
         user = request.user
 
+        state = States.NOT_DONE_TODAY
+
         session_exists = Session.objects.filter(
             date=today,
             user=user,
             lab_mode=False
         ).exists()
-        # change exists for day if app is currently in lab mode.
+
+        if session_exists:
+            state = States.DONE_TODAY
+
+        if self.check_sessions_completed(user):
+            state = States.COMPLETED
 
         if hasattr(user, 'usersettings'):
-            session_exists = False if request.user.usersettings.lab_mode else session_exists
-
-        completed = self.check_sessions_completed(user)
+            if user.usersettings.lab_mode:
+                state = States.LAB_MODE
 
         response = {
-            'exists': session_exists,
-            'completed': completed
+            # This is from version 1
+            'exists': False,
+            # This is the new state var.
+            'state': state
         }
 
         return Response(response)

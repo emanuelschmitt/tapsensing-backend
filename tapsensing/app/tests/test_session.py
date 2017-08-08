@@ -1,11 +1,12 @@
 import datetime
 
+from django.conf import settings
 from django.test import TestCase
 from django.contrib.auth.models import User
 from rest_framework.test import APIRequestFactory, force_authenticate
 
 from ..models import Session, UserSettings
-from ..views.session import SessionViewSet
+from ..views.session import SessionViewSet, States
 
 USERNAME = 'testuser'
 PASSWORD = '123'
@@ -33,31 +34,26 @@ class SessionTests(TestCase):
             lab_mode=lab_mode
         )
 
-    def testSessionExistsForToday(self):
+    def testSessionExists(self):
         request = self.factory.get("api/v1/session/exists/")
         force_authenticate(request, user=self.user)
 
         view = SessionViewSet.as_view({'get': 'exists'})
         response = view(request)
 
-        self.assertEquals(response.data["exists"], False)
+        self.assertEquals(response.data["state"], States.NOT_DONE_TODAY)
 
-        session = Session.objects.create(
-            user=self.user,
-            date=datetime.datetime.today(),
-            body_posture=Session.SITTING,
-            typing_modality=Session.INDEX_FINGER,
-        )
+        session = self.createSession()
 
         response = view(request)
-        self.assertEquals(response.data["exists"], True)
+        self.assertEquals(response.data["state"], States.DONE_TODAY)
 
         session.delete()
 
         response = view(request)
-        self.assertEquals(response.data["exists"], False)
+        self.assertEquals(response.data["state"], States.NOT_DONE_TODAY)
 
-    def testSessionExistsForTodayLabMode(self):
+    def testSessionLabMode(self):
         self.user.usersettings.lab_mode = True
 
         request = self.factory.get("api/v1/session/exists/")
@@ -66,42 +62,21 @@ class SessionTests(TestCase):
         view = SessionViewSet.as_view({'get': 'exists'})
         response = view(request)
 
-        self.assertEquals(response.data["exists"], False)
+        self.assertEquals(response.data["state"], States.LAB_MODE)
 
-        session = Session.objects.create(
-            user=self.user,
-            date=datetime.datetime.today(),
-            body_posture=Session.SITTING,
-            typing_modality=Session.INDEX_FINGER
-        )
+        session = self.createSession()
 
         response = view(request)
-        self.assertEquals(response.data["exists"], False)
+        self.assertEquals(response.data["state"], States.LAB_MODE)
 
         session.delete()
+        self.user.usersettings.lab_mode = False
 
         response = view(request)
-        self.assertEquals(response.data["exists"], False)
+        self.assertNotEqual(response.data["state"], States.LAB_MODE)
 
     def testSessionExistsTodayWhenCreatedYesterday(self):
-        session = Session.objects.create(
-            user=self.user,
-            date=datetime.datetime.today() - datetime.timedelta(days=1),
-            body_posture=Session.SITTING,
-            typing_modality=Session.INDEX_FINGER
-        )
-        request = self.factory.get("api/v1/session/exists/")
-        force_authenticate(request, user=self.user)
-        view = SessionViewSet.as_view({'get': 'exists'})
-        response = view(request)
-
-        self.assertEquals(response.data["exists"], False)
-
-        self.user.usersettings.lab_mode = True
-        self.assertEquals(response.data["exists"], False)
-
-    def testSessionExistsTodayWhenCreatedYesterdayLabMode(self):
-        self.user.usersettings.lab_mode = True
+        self.user.usersettings.lab_mode = False
 
         session = Session.objects.create(
             user=self.user,
@@ -114,12 +89,9 @@ class SessionTests(TestCase):
         view = SessionViewSet.as_view({'get': 'exists'})
         response = view(request)
 
-        self.assertEquals(response.data["exists"], False)
+        self.assertEquals(response.data["state"], States.NOT_DONE_TODAY)
 
-        self.user.usersettings.lab_mode = True
-        self.assertEquals(response.data["exists"], False)
-
-    def testNotCompleted(self):
+    def testCompleted(self):
         self.user.usersettings.lab_mode = False
 
         request = self.factory.get("api/v1/session/exists/")
@@ -127,18 +99,15 @@ class SessionTests(TestCase):
         view = SessionViewSet.as_view({'get': 'exists'})
         response = view(request)
 
-        self.assertEquals(response.data["completed"], False)
+        self.assertEquals(response.data["state"], States.NOT_DONE_TODAY)
 
-        for i in range(4):
+        for i in range(settings.AMOUNT_NON_LAB_SESSIONS):
             _ = self.createSession()
 
-        view = SessionViewSet.as_view({'get': 'exists'})
         response = view(request)
-        self.assertEquals(response.data["completed"], True)
+        self.assertEquals(response.data["state"], States.COMPLETED)
 
-        for i in range(7):
-            _ = self.createSession()
+        Session.objects.all().delete()
 
-        view = SessionViewSet.as_view({'get': 'exists'})
         response = view(request)
-        self.assertEquals(response.data["completed"], True)
+        self.assertNotEqual(response.data["state"], States.DONE_TODAY)
