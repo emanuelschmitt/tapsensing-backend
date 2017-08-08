@@ -24,7 +24,7 @@ urls = [
 
     # Surveys
     url(r'^survey/pretest/$', pretest_survey),
-    url(r'^survey/final/$', pretest_survey),
+    url(r'^survey/final/$', final_survey),
 
     # Statistics
     url(r'^statistics/$', statistics),
