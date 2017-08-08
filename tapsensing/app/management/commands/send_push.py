@@ -1,6 +1,7 @@
 from logging import getLogger
 from datetime import date, time, datetime
 
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.management.base import BaseCommand
 from push_notifications.models import APNSDevice
@@ -79,6 +80,9 @@ def send_messages(message, sound='default'):
         if does_session_exist_for_user(user.pk):
             continue
 
+        if check_sessions_completed(user):
+            continue
+
         user_devices = devices.filter(user=user)
 
         if not user_devices:
@@ -91,6 +95,11 @@ def send_messages(message, sound='default'):
 def does_session_exist_for_user(user_id):
     today = date.today()
     return Session.objects.filter(date=today, user=user_id).exists()
+
+
+def check_sessions_completed(user):
+    non_lab_session_count = Session.objects.filter(user=user, lab_mode=False).count()
+    return non_lab_session_count >= settings.AMOUNT_NON_LAB_SESSIONS
 
 
 def time_in_range(start, end, now):
