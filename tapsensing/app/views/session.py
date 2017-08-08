@@ -34,7 +34,7 @@ class SessionViewSet(CRUDViewSet(Session)):
     @staticmethod
     def check_sessions_completed(user):
         non_lab_session_count = Session.objects.filter(user=user, lab_mode=False).count()
-        return non_lab_session_count == settings.AMOUNT_NON_LAB_SESSIONS
+        return non_lab_session_count >= settings.AMOUNT_NON_LAB_SESSIONS
 
     @list_route(methods=['get'], permissions=(IsAuthenticated,))
     def exists(self, request):
