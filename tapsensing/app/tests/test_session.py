@@ -11,6 +11,7 @@ USERNAME = 'testuser'
 PASSWORD = '123'
 
 
+# BEWARE: Heavy 80/20
 class SessionTests(TestCase):
     user = None
     factory = None
@@ -22,6 +23,15 @@ class SessionTests(TestCase):
     def tearDown(self):
         User.objects.all().delete()
         Session.objects.all().delete()
+
+    def createSession(self, date=datetime.datetime.today(), lab_mode=False):
+        return Session.objects.create(
+            user=self.user,
+            date=date,
+            body_posture=Session.SITTING,
+            typing_modality=Session.INDEX_FINGER,
+            lab_mode=lab_mode
+        )
 
     def testSessionExistsForToday(self):
         request = self.factory.get("api/v1/session/exists/")
@@ -36,7 +46,7 @@ class SessionTests(TestCase):
             user=self.user,
             date=datetime.datetime.today(),
             body_posture=Session.SITTING,
-            typing_modality=Session.INDEX_FINGER
+            typing_modality=Session.INDEX_FINGER,
         )
 
         response = view(request)
@@ -108,3 +118,27 @@ class SessionTests(TestCase):
 
         self.user.usersettings.lab_mode = True
         self.assertEquals(response.data["exists"], False)
+
+    def testNotCompleted(self):
+        self.user.usersettings.lab_mode = False
+
+        request = self.factory.get("api/v1/session/exists/")
+        force_authenticate(request, user=self.user)
+        view = SessionViewSet.as_view({'get': 'exists'})
+        response = view(request)
+
+        self.assertEquals(response.data["completed"], False)
+
+        for i in range(4):
+            _ = self.createSession()
+
+        view = SessionViewSet.as_view({'get': 'exists'})
+        response = view(request)
+        self.assertEquals(response.data["completed"], True)
+
+        for i in range(7):
+            _ = self.createSession()
+
+        view = SessionViewSet.as_view({'get': 'exists'})
+        response = view(request)
+        self.assertEquals(response.data["completed"], True)

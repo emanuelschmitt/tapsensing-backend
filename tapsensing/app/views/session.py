@@ -24,7 +24,7 @@ class SessionViewSet(CRUDViewSet(Session)):
         serializer.save(lab_mode=self.request.user.usersettings.lab_mode)
 
     @staticmethod
-    def check_completed(user):
+    def check_sessions_completed(user):
         non_lab_session_count = Session.objects.filter(user=user, lab_mode=False).count()
         return non_lab_session_count == settings.AMOUNT_NON_LAB_SESSIONS
 
@@ -33,7 +33,11 @@ class SessionViewSet(CRUDViewSet(Session)):
         today = date.today()
         user = request.user
 
-        session_exists = Session.objects.filter(date=today, user=user).exists()
+        session_exists = Session.objects.filter(
+            date=today,
+            user=user,
+            lab_mode=False
+        ).exists()
         # change exists for day if app is currently in lab mode.
 
         if hasattr(user, 'usersettings'):
