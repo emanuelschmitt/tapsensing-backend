@@ -63,7 +63,7 @@ class SessionViewSet(CRUDViewSet(Session)):
             # This is from version 1
             'exists': False,
             # This is the new state var.
-            'state': state
+            'state': state.value
         }
 
         return Response(response)
