@@ -1,5 +1,6 @@
 from datetime import date
 
+from django.conf import settings
 from django.contrib.auth.models import User
 from rest_framework import serializers
 from rest_framework.decorators import list_route
@@ -22,6 +23,11 @@ class SessionViewSet(CRUDViewSet(Session)):
     def perform_create(self, serializer):
         serializer.save(lab_mode=self.request.user.usersettings.lab_mode)
 
+    @staticmethod
+    def check_completed(user):
+        non_lab_session_count = Session.objects.filter(user=user, lab_mode=False).count()
+        return non_lab_session_count == settings.AMOUNT_NON_LAB_SESSIONS
+
     @list_route(methods=['get'], permissions=(IsAuthenticated,))
     def exists(self, request):
         today = date.today()
@@ -33,8 +39,11 @@ class SessionViewSet(CRUDViewSet(Session)):
         if hasattr(user, 'usersettings'):
             session_exists = False if request.user.usersettings.lab_mode else session_exists
 
+        completed = self.check_sessions_completed(user)
+
         response = {
-            'exists': session_exists
+            'exists': session_exists,
+            'completed': completed
         }
 
         return Response(response)
