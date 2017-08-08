@@ -4,13 +4,13 @@ from rest_framework import permissions, status, parsers
 from rest_framework.decorators import api_view, permission_classes, parser_classes
 from rest_framework.response import Response
 
-from ..models import PreTestSurvey
+from ..models import FinalSurvey
 from ..utils.serializers import AllFieldSerializer
 
 logger = logging.getLogger(__name__)
 
 
-class FinalSurveySerializer(AllFieldSerializer(PreTestSurvey)):
+class FinalSurveySerializer(AllFieldSerializer(FinalSurvey)):
     pass
 
 
