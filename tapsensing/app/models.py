@@ -105,3 +105,12 @@ class PreTestSurvey(models.Model):
     input_modalities = models.CharField(max_length=200)
     most_used_input_modality = models.CharField(max_length=100)
     device_usage = models.CharField(max_length=200)
+
+
+class FinalSurvey(models.Model):
+    created = models.DateTimeField(auto_now_add=True)
+
+    age = models.IntegerField()
+    gender = models.CharField(max_length=100)
+    occupation = models.CharField(max_length=200)
+    hand = models.CharField(max_length=100)
