@@ -11,7 +11,7 @@ users = []
 
 
 def random_string(n):
-    return ''.join(random.choices(string.ascii_uppercase + string.digits, k=n))
+    return ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(n))
 
 
 def create_user():
