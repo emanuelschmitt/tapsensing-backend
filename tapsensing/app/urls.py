@@ -7,8 +7,7 @@ from .views.login import login
 from .views.sensordata import sensor_data
 from .views.touchevents import touch_event
 from .views.apns import apns_register
-from .views.pretest_survey import pretest_survey
-from .views.final_survey import final_survey
+from .views.survey import survey
 from .views.trial_settings import trial_settings
 
 urls = [
@@ -23,8 +22,7 @@ urls = [
     url(r'^apns/$', apns_register),
 
     # Surveys
-    url(r'^survey/pretest/$', pretest_survey),
-    url(r'^survey/final/$', final_survey),
+    url(r'^survey/$', survey),
 
     # Statistics
     url(r'^statistics/$', statistics),
