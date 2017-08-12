@@ -2,6 +2,7 @@ import random
 import string
 
 from django.contrib.auth.models import User
+from ..app.models import UserSettings
 
 USER_AMOUNT = 30
 PASSWORD_LENGTH = 5
@@ -17,9 +18,12 @@ def random_string(n):
 def create_user():
     password = random_string(PASSWORD_LENGTH)
     username = username_stem + str(i)
-    User.objects.create(
+    user = User.objects.create(
         username=username,
         password=password
+    )
+    UserSettings.objects.create(
+        user=user
     )
     print("Created user: " + username + ".")
     users.append({
